@@ -1,0 +1,44 @@
+# Production overrides — use with:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+services:
+
+  db:
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  redis:
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 128M
+
+  app:
+    image: ghcr.io/hermes-93/docker-compose-demo:${APP_VERSION:-latest}
+    build:
+      args:
+        - APP_VERSION=${APP_VERSION:-latest}
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+        reservations:
+          memory: 128M
+    environment:
+      DEBUG: "false"
+
+  nginx:
+    ports:
+      - "80:80"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 64M
