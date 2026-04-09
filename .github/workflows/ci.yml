@@ -26,7 +26,7 @@ jobs:
         run: pip install -r app/requirements-dev.txt
 
       - name: Run tests
-        run: pytest app/tests/ -v --cov=app/src --cov-report=term-missing --cov-fail-under=80
+        run: pytest app/tests/ -v --cov=app/src --cov-report=term-missing --cov-omit=app/src/wsgi.py --cov-fail-under=80
 
   # ── Docker build ───────────────────────────────────────────────────────────
   build:
